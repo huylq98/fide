@@ -1,7 +1,9 @@
 package fide.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +23,25 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public Match getMatchById(Integer id) {
-		return matchRepo.getOne(id);
+	public Match getMatchById(Integer id) throws Exception {
+		Optional<Match> match = matchRepo.findById(id);
+		if(match.isPresent()) {
+			return match.get();
+		} else {
+			throw new Exception("No record found.");
+		}
 	}
 
 	@Override
-	public Match createOrUpdateMatch(Match match) {
-		return matchRepo.save(match);
+	public Match createOrUpdateMatch(Match oldMatch) {
+		Optional<Match> match = matchRepo.findById(oldMatch.getId());
+		if(match.isPresent()) {
+			Match newMatch = match.get();
+			BeanUtils.copyProperties(oldMatch, oldMatch);
+			return matchRepo.save(newMatch);
+		} else {
+			return matchRepo.save(oldMatch);
+		}
 	}
 
 	@Override

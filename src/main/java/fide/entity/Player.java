@@ -1,5 +1,7 @@
 package fide.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -12,7 +14,7 @@ public class Player extends BaseEntity {
 	private String name;
 
 	@Column(name = "dob")
-	private Integer dob;
+	private Date dob;
 
 	@Column(name = "nationality")
 	private String nationality;
@@ -31,11 +33,11 @@ public class Player extends BaseEntity {
 		this.name = name;
 	}
 
-	public Integer getDob() {
+	public Date getDob() {
 		return dob;
 	}
 
-	public void setDob(Integer dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 
