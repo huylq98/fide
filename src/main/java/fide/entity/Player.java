@@ -1,13 +1,20 @@
 package fide.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "player")
+@JsonIgnoreProperties({"leagues"})
 public class Player extends BaseEntity {
 
 	@Column(name = "name", nullable = false)
@@ -20,10 +27,13 @@ public class Player extends BaseEntity {
 	private String nationality;
 
 	@Column(name = "elorating", nullable = false)
-	private Float eloRating;
+	private Double eloRating;
 
 	@Column(name = "note")
 	private String note;
+
+	@ManyToMany(mappedBy = "players", fetch = FetchType.LAZY)
+	private List<League> leagues = new ArrayList<>();
 
 	public String getName() {
 		return name;
@@ -49,11 +59,11 @@ public class Player extends BaseEntity {
 		this.nationality = nationality;
 	}
 
-	public Float getEloRating() {
+	public Double getEloRating() {
 		return eloRating;
 	}
 
-	public void setEloRating(Float eloRating) {
+	public void setEloRating(Double eloRating) {
 		this.eloRating = eloRating;
 	}
 
@@ -63,5 +73,13 @@ public class Player extends BaseEntity {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public List<League> getLeagues() {
+		return leagues;
+	}
+
+	public void setLeagues(List<League> leagues) {
+		this.leagues = leagues;
 	}
 }
