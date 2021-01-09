@@ -1,25 +1,25 @@
 package fide.controller;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import fide.entity.Player;
 import fide.service.LeaguePlayerService;
 import fide.utils.Constant;
 
-@RestController
-@RequestMapping("/league")
+@Controller
 public class LeagueController {
 
 	@Autowired
 	private LeaguePlayerService leaguePlayerService;
 
-	@GetMapping
-	public List<Player> getRankingTable() {
-		return leaguePlayerService.getRankingTable(1, Constant.FIRST_ROUND);
+	@GetMapping("/ranking-table")
+	public String getRankingTable(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
+		model.addAttribute("players", leaguePlayerService.getRankingTable(1, Constant.FIRST_ROUND));
+		return "ranking-table";
 	}
 }
